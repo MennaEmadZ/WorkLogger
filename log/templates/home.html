@@ -1,0 +1,107 @@
+{%extends 'layout.html'%}
+{%block title%}
+Home
+{%endblock%}
+<h1>Login</h1>
+{%block content%}
+
+<div class="container  text-center py-5">
+    <div class="row mb-5">
+        <h2>HELLO, {{user.first_name}}</h2>
+        <h2 class="d-flex justify-content-start">LOG YOUR TIME BELOW</h2>
+    </div>
+
+
+    <form  class=" my-3" method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-lg-4">
+                <label class="d-flex justify-content-start my-3">Duration: </label>
+                <div class="d-flex justify-content-start">
+                    {{log_form.duration}}
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <label class="d-flex justify-content-start my-3">project: </label>
+                <div class="d-flex justify-content-start">
+
+                    {{log_form.project}}
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <label class="d-flex justify-content-start my-3">Remarks: </label>
+                <div class="d-flex justify-content-start">
+                    {{log_form.remarks}}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-4">
+              
+                    <label class="d-flex justify-content-start my-3">Date: </label>
+                    <div class="d-flex justify-content-start">
+                        {{log_form.date}}
+                    </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-4">
+
+                <button  type="submit"
+                    class="d-flex justify-content-start btn btn-secondary my-5">Save</button>
+            </div>
+        </div>
+
+    </form>
+    <h2 class="d-flex justify-content-start">VIEW YOUR LOG BELOW</h2>
+    <form  action="{% url 'logView' %}" method="GET">
+        <label class="d-flex justify-content-start">Select Date:</label>
+          <input class="d-flex justify-content-start" name="date" type="date">
+       
+          <button  type="submit"
+          class="d-flex justify-content-start btn btn-secondary my-5">Load log</button>
+      </form>
+  
+    <div class="row text-start">
+       
+
+        {{date}}
+       
+        <h5 class="font-weight-normal">TOTAL HOURS LOGGED TODAY: {{total_today_log.duration__sum}} hours</h5>
+        <h5 class="font-weight-normal">TOTAL HOURS LOGGED THIS WEEK: {{week_log.duration__sum}} hours</h5>
+        <h5 class="font-weight-normal">TOTAL HOURS LOGGED THIS MONTH: {{month_log.duration__sum}} hours</h5>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">DURATION</th>
+                    <th scope="col">PROJECT</th>
+                    <th scope="col">REMARKS</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in today_log %}
+                <tr>
+                    
+                    {% if log.is_late %}
+                        <td class='text-danger' >{{log.duration}}</td>
+                        <td class='text-danger'>{{log.project}}</td>
+                        <td class='text-danger'>{{log.remarks}}</td>
+                    {% else %}
+                        <td class='text-muted'>{{log.duration}}</td>
+                        <td class='text-muted'>{{log.project}}</td>
+                        <td class='text-muted'>{{log.remarks}}</td>
+                    {% endif %}
+                
+                 </tr>
+            
+                 {% endfor %}
+             
+            </tbody>
+          </table>
+       
+
+    </div>
+</div>
+{%endblock%}

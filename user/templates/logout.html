@@ -1,0 +1,14 @@
+{%extends 'layout.html'%}
+{%block title%}
+ Login
+{%endblock%}
+<h1>logout</h1>
+{%block content%}
+<div class="container my-5 py-5">
+<form class="col-12   text-center " method="post" >
+  {% csrf_token %}
+    <h1>You are logged out successfully</h1>
+</form>
+</div>
+ 
+{%endblock%}
